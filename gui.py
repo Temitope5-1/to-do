@@ -4,11 +4,13 @@ import FreeSimpleGUI as sg
 label = sg.Text("Type in a to do")
 input = sg.InputText(tooltip= "Enter to-do", key="To-do")
 add_button = sg.Button("Add")
+list_box=sg.Listbox(values=functions.get_todos(), key="todos", enable_events=True, size=(45,10))
+edit_button = sg.Button("Edit")
 
 
 window =sg.Window("My To-do App",
                   layout=[[label],
-                          [input, add_button]],
+                          [input, add_button],[list_box,edit_button]],
                   font=('Helvetica', 12))
 while True:
     event, values = window.read()
@@ -20,6 +22,20 @@ while True:
             new_todos= values['To-do'] + "\n"
             todos.append(new_todos)
             functions.write_todos(todos)
+            window["todos"].update(values=todos)
+
+        case "Edit":
+            todo_to_edit = values['todos'][0]
+            new_todos = values['To-do'] + "\n"
+
+            todos = functions.get_todos()
+            index =todos.index(todo_to_edit)
+            todos[index] = new_todos
+            functions.write_todos(todos)
+            window["todos"].update(values=todos)
+
+        case "todos":
+            window["To-do"].update(value=values['todos'][0])
         case sg.WIN_CLOSED:
             break
 
