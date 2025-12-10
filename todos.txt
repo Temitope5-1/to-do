@@ -1,7 +1,2 @@
-wash
-sweep
-transfer
-go to work
-make up
 Master python
 compute
